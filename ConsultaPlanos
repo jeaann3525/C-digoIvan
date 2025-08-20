@@ -1,0 +1,104 @@
+package planos;
+
+import java.util.List;
+import java.util.Scanner;
+
+import dao.DAO;
+import model.Cadastro;
+
+public class ConsultaPlanos {
+
+    public static void executar(Scanner scanner) {
+        int opcao;
+
+        do {
+            System.out.println("\n========== CONSULTA DE PLANOS ==========");
+            System.out.println("1 - Buscar clientes por plano");
+            System.out.println("2 - Listar todos os planos atribuídos");
+            System.out.println("0 - Voltar ao menu anterior");
+            System.out.print("Escolha uma opção: ");
+
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+
+                switch (opcao) {
+                    case 1:
+                        buscarPorPlano(scanner);
+                        break;
+                    case 2:
+                        listarPlanosAtribuidos(scanner);
+                        break;
+                    case 0:
+                        System.out.println("↩ Retornando ao menu anterior...");
+                        break;
+                    default:
+                        System.out.println("❌ Opção inválida. Tente novamente.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Entrada inválida. Digite apenas números.");
+                opcao = -1;
+            }
+
+        } while (opcao != 0);
+    }
+
+    public static void buscarPorPlano(Scanner scanner) {
+        System.out.println("\nSelecione o plano para consulta:");
+        System.out.println("1 - Plano de Emagrecimento");
+        System.out.println("2 - Plano de Body Builder");
+        System.out.println("3 - Plano de Fortalecimento");
+        System.out.print("Escolha uma opção: ");
+        
+        String planoSelecionado;
+        try {
+            int opcao = Integer.parseInt(scanner.nextLine());
+            
+            switch (opcao) {
+                case 1:
+                    planoSelecionado = "Plano de Emagrecimento";
+                    break;
+                case 2:
+                    planoSelecionado = "Plano de Body Builder";
+                    break;
+                case 3:
+                    planoSelecionado = "Plano de Fortalecimento";
+                    break;
+                default:
+                    System.out.println("❌ Opção inválida.");
+                    return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Entrada inválida.");
+            return;
+        }
+
+        DAO<Cadastro> dao = new DAO<>(Cadastro.class);
+        List<Cadastro> clientes = dao.consultar(
+            "SELECT c FROM Cadastro c WHERE c.plano = ?1",
+            planoSelecionado);
+
+        if (clientes.isEmpty()) {
+            System.out.println("❌ Nenhum cliente encontrado com o plano " + planoSelecionado + ".");
+        } else {
+            System.out.println("\n📋 Clientes com o plano " + planoSelecionado + ":");
+            clientes.forEach(System.out::println);
+        }
+    }
+
+    public static void listarPlanosAtribuidos(Scanner scanner) {
+        DAO<Cadastro> dao = new DAO<>(Cadastro.class);
+        List<Cadastro> clientesComPlano = dao.consultar(
+            "SELECT c FROM Cadastro c WHERE c.plano IS NOT NULL");
+
+        if (clientesComPlano.isEmpty()) {
+            System.out.println("❌ Nenhum cliente com plano atribuído.");
+        } else {
+            System.out.println("\n📋 Clientes com planos atribuídos:");
+            for (Cadastro c : clientesComPlano) {
+                System.out.println("ID: " + c.getId() + 
+                                  " | Nome: " + c.getNome() + 
+                                  " | Plano: " + c.getPlano());
+            }
+        }
+    }
+}
