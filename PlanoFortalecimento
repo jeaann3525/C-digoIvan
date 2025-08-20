@@ -1,0 +1,21 @@
+package planos;
+
+public class PlanosFortalecimento {
+    
+    public void executar() {
+        System.out.println("\n=== Plano de Fortalecimento ===");
+        System.out.println("Duração: 10 semanas");
+        System.out.println("Frequência: 4 dias por semana");
+        System.out.println("\nTabela de Treinos:");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("|      Dia         |           Exercícios                |");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("| Segunda          | Agachamento, Leg Press, Panturrilha|");
+        System.out.println("| Quarta           | Supino, Flexão, Tríceps banco       |");
+        System.out.println("| Sexta            | Barra fixa, Remada, Puxada          |");
+        System.out.println("| Domingo          | Prancha, Abdominal, Lombar          |");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("\nDescanso: Terça, Quinta e Sábado");
+        System.out.println("Dieta: Equilibrada com ênfase em proteínas");
+    }
+}
