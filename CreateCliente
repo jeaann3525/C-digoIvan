@@ -1,0 +1,187 @@
+package crud.Cliente;
+
+import java.util.Scanner;
+import dao.DAO;
+import model.Cadastro;
+import planos.MenuPlanos;
+
+public class CreateCliente {
+
+    public static void executar(Scanner scanner) {
+        int escolha;
+
+        do {
+            System.out.println("\n========== CADASTRO DE CLIENTE ==========");
+            System.out.println("1 - Iniciar cadastro de cliente");
+            System.out.println("0 - Voltar ao menu anterior");
+            System.out.print("Escolha uma opção: ");
+
+            try {
+                escolha = Integer.parseInt(scanner.nextLine());
+
+                switch (escolha) {
+                    case 1:
+                        cadastrarClientes(scanner);
+                        break;
+                    case 0:
+                        System.out.println("↩ Retornando ao menu de clientes...");
+                        break;
+                    default:
+                        System.out.println("❌ Opção inválida. Tente novamente.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Entrada inválida. Digite um número.");
+                escolha = -1;
+            }
+
+        } while (escolha != 0);
+    }
+
+    private static void cadastrarClientes(Scanner scanner) {
+        DAO<Cadastro> dao = new DAO<>(Cadastro.class);
+        boolean continuar = true;
+
+        while (continuar) {
+            System.out.println("\n📝 Cadastro de Novo Cliente");
+
+            // Captura e validação dos dados
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine();
+            while (nome.isBlank()) {
+                System.out.println("❌ Nome não pode ser vazio!");
+                System.out.print("Nome: ");
+                nome = scanner.nextLine();
+            }
+
+            // Validação do CPF
+            String cpf;
+            do {
+                System.out.print("CPF (11 dígitos, apenas números): ");
+                cpf = scanner.nextLine().replaceAll("[^0-9]", "");
+                if (cpf.length() != 11) {
+                    System.out.println("❌ CPF deve ter exatamente 11 dígitos!");
+                }
+            } while (cpf.length() != 11);
+
+            // Validação do RG
+            String rg;
+            do {
+                System.out.print("RG (8-10 dígitos, apenas números): ");
+                rg = scanner.nextLine().replaceAll("[^0-9]", "");
+                if (rg.length() < 8 || rg.length() > 10) {
+                    System.out.println("❌ RG deve ter entre 8 e 10 dígitos!");
+                }
+            } while (rg.length() < 8 || rg.length() > 10);
+
+            // Validação da data de nascimento
+            String dataNascimento;
+            do {
+                System.out.print("Data de Nascimento (dd/mm/aaaa): ");
+                dataNascimento = scanner.nextLine();
+                if (!dataNascimento.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+                    System.out.println("❌ Formato inválido! Use dd/mm/aaaa");
+                }
+            } while (!dataNascimento.matches("^\\d{2}/\\d{2}/\\d{4}$"));
+
+            System.out.print("Gênero (Masculino/Feminino/Outro): ");
+            String genero = scanner.nextLine();
+
+            // Validação básica de email
+            String email;
+            do {
+                System.out.print("Email: ");
+                email = scanner.nextLine();
+                if (!email.contains("@") || !email.contains(".")) {
+                    System.out.println("❌ Email inválido!");
+                }
+            } while (!email.contains("@") || !email.contains("."));
+
+            // Validação de telefone
+            String telefone;
+            do {
+                System.out.print("Telefone (com DDD, apenas números): ");
+                telefone = scanner.nextLine().replaceAll("[^0-9]", "");
+                if (telefone.length() < 10 || telefone.length() > 11) {
+                    System.out.println("❌ Telefone deve ter 10 ou 11 dígitos (com DDD)!");
+                }
+            } while (telefone.length() < 10 || telefone.length() > 11);
+            
+            // Endereço detalhado
+            System.out.print("Endereço: ");
+            String endereco = scanner.nextLine();
+            while (endereco.isBlank()) {
+                System.out.println("❌ Endereço não pode ser vazio!");
+                System.out.print("Endereço: ");
+                endereco = scanner.nextLine();
+            }
+
+            System.out.print("Cidade: ");
+            String cidade = scanner.nextLine();
+
+            System.out.print("Estado (UF): ");
+            String estado = scanner.nextLine();
+
+            // Validação de CEP
+            String cep;
+            do {
+                System.out.print("CEP (8 dígitos, apenas números): ");
+                cep = scanner.nextLine().replaceAll("[^0-9]", "");
+                if (cep.length() != 8) {
+                    System.out.println("❌ CEP deve ter exatamente 8 dígitos!");
+                }
+            } while (cep.length() != 8);
+
+            System.out.print("Observações: ");
+            String observacoes = scanner.nextLine();
+            
+            // Seleção do plano de treino
+            String plano = selecionarPlano(scanner);
+
+            // Cria o objeto Cadastro
+            Cadastro novoCliente = new Cadastro(
+                nome, cpf, rg, dataNascimento, genero, email,
+                telefone, endereco, cidade, estado, cep, observacoes, plano
+            );
+
+            dao.incluirTransacional(novoCliente);
+            System.out.println("✅ Cliente cadastrado com sucesso!");
+
+            System.out.print("\nDeseja cadastrar outro cliente? (s/n): ");
+            String resposta = scanner.nextLine().toLowerCase();
+            continuar = resposta.equals("s");
+        }
+
+        dao.fecharEm();
+    }
+    
+    private static String selecionarPlano(Scanner scanner) {
+        System.out.println("\n📋 Selecione o plano de treino:");
+        System.out.println("1 - Plano de Emagrecimento");
+        System.out.println("2 - Plano de Body Builder");
+        System.out.println("3 - Plano de Fortalecimento");
+        System.out.println("0 - Nenhum plano");
+        System.out.print("Escolha uma opção: ");
+        
+        try {
+            int opcao = Integer.parseInt(scanner.nextLine());
+            
+            switch (opcao) {
+                case 1:
+                    return "Plano de Emagrecimento";
+                case 2:
+                    return "Plano de Body Builder";
+                case 3:
+                    return "Plano de Fortalecimento";
+                case 0:
+                    return "Nenhum plano";
+                default:
+                    System.out.println("❌ Opção inválida. Nenhum plano será atribuído.");
+                    return "Nenhum plano";
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("❌ Entrada inválida. Nenhum plano será atribuído.");
+            return "Nenhum plano";
+        }
+    }
+}
