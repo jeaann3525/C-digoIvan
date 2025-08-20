@@ -1,0 +1,22 @@
+package planos;
+
+public class Planobodybuilder {
+    
+    public void executar() {
+        System.out.println("\n=== Plano de Body Builder ===");
+        System.out.println("Duração: 12 semanas");
+        System.out.println("Frequência: 5 dias por semana");
+        System.out.println("\nTabela de Treinos:");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("|      Dia         |           Exercícios                |");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("| Segunda - Peito   | Supino, Crucifixo, Flexões          |");
+        System.out.println("| Terça - Costas    | Barra fixa, Remada, Puxada alta     |");
+        System.out.println("| Quarta - Pernas   | Agachamento, Leg Press, Afundos    |");
+        System.out.println("| Quinta - Ombros   | Desenvolvimento, Elevação lateral   |");
+        System.out.println("| Sexta - Braços    | Rosca direta, Tríceps pulley        |");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("\nDescanso: Sábado e Domingo");
+        System.out.println("Dieta: Alta em proteínas e carboidratos complexos");
+    }
+}
