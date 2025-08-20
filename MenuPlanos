@@ -1,0 +1,45 @@
+package planos;
+
+import java.util.Scanner;
+
+public class MenuPlanos {
+
+    public static void executar(Scanner scanner) {
+        int opcao;
+
+        do {
+            System.out.println("\n========== Planos de treinos ==========");
+            System.out.println("1 - Planos de Emagrecimento");
+            System.out.println("2 - Planos de Body Builder");
+            System.out.println("3 - Planos de Fortalecimento");
+            System.out.println("0 - Voltar ao menu principal");
+            System.out.print("Escolha uma opção: ");
+
+            try {
+                opcao = Integer.parseInt(scanner.nextLine());
+
+                switch (opcao) {
+                    case 1:
+                        new PlanoEmagrecimento().executar();
+                        break;
+                    case 2:
+                        new Planobodybuilder().executar();
+                        break;
+                    case 3:
+                        new PlanosFortalecimento().executar();
+                        break;
+                    case 0:
+                        System.out.println("↩ Retornando ao menu principal...");
+                        break;
+                    default:
+                        System.out.println("❌ Opção inválida.");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Entrada inválida.");
+                opcao = -1;
+            }
+
+        } while (opcao != 0);
+    }
+}
