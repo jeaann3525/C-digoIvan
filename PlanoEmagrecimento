@@ -1,0 +1,24 @@
+package planos;
+
+public class PlanoEmagrecimento {
+
+    public void executar() {
+        System.out.println("\n=== Plano de Emagrecimento ===");
+        System.out.println("Duração: 8 semanas");
+        System.out.println("Frequência: 6 dias por semana");
+        System.out.println("\nTabela de Treinos:");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("|      Dia         |           Exercícios                |");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("| Segunda          | 30min cardio + Circuito superior    |");
+        System.out.println("| Terça            | 45min HIIT + Abdominal              |");
+        System.out.println("| Quarta           | 30min cardio + Circuito inferior    |");
+        System.out.println("| Quinta           | Aula de spinning (60min)            |");
+        System.out.println("| Sexta            | 45min HIIT + Abdominal              |");
+        System.out.println("| Sábado           | Caminhada (60min) ou Natação        |");
+        System.out.println("+------------------+-------------------------------------+");
+        System.out.println("\nDescanso: Domingo");
+        System.out.println("Dieta: Déficit calórico com alimentos nutritivos");
+    }
+}
+		
